@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 import ICandidatesRepository from '@modules/candidates/repositories/ICandidatesRepository';
 
 @injectable()
-class CreateAppointmentService {
+class DeleteCandidateService {
   constructor(
     @inject('CandidatesRepository')
     private candidatesRepository: ICandidatesRepository,
@@ -22,4 +22,4 @@ class CreateAppointmentService {
   }
 }
 
-export default CreateAppointmentService;
+export default DeleteCandidateService;
