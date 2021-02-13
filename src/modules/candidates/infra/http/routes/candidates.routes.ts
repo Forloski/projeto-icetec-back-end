@@ -43,6 +43,8 @@ candidatesRouter.put(
   candidatesController.update,
 );
 
+candidatesRouter.get('/:id', candidatesController.index);
+
 candidatesRouter.get('/', listCandidatesController.index);
 
 candidatesRouter.delete(

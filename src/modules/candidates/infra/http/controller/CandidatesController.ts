@@ -6,6 +6,7 @@ import ICreateCandidateDTO from '@modules/candidates/dtos/ICreateCandidateDTO';
 import CreateCandidate from '@modules/candidates/services/CreateCandidatesService';
 import DeleteCandidate from '@modules/candidates/services/DeleteCandidatesService';
 import UpdateCandidate from '@modules/candidates/services/UpdateCandidatesService';
+import ReadCandidate from '@modules/candidates/services/ReadCandidatesService';
 
 interface IUpdateCandidateData extends ICreateCandidateDTO {
   id: string;
@@ -58,6 +59,16 @@ export default class CandidatesController {
       linkedinUrl,
       technologies,
     });
+
+    return response.json(candidate);
+  }
+
+  public async index(request: Request, response: Response): Promise<Response> {
+    const id = (request.params.id as unknown) as string;
+
+    const readCandidate = container.resolve(ReadCandidate);
+
+    const candidate = await readCandidate.execute(id);
 
     return response.json(candidate);
   }
