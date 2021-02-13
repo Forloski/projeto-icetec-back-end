@@ -5,14 +5,12 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 import CandidatesController from '../controller/CandidatesController';
-import ListAllCandidatesController from '../controller/ListAllCandidatesController';
-import ListCandidatesByTechnologyController from '../controller/ListCandidatesByTechnologyController';
+import ListCandidatesController from '../controller/ListCandidatesController';
 
 const candidatesRouter = Router();
 
 const candidatesController = new CandidatesController();
-const listAllCandidatesController = new ListAllCandidatesController();
-const listCandidatesByTechnologyController = new ListCandidatesByTechnologyController();
+const listCandidatesController = new ListCandidatesController();
 
 candidatesRouter.use(ensureAuthenticated);
 
@@ -45,22 +43,12 @@ candidatesRouter.put(
   candidatesController.update,
 );
 
-candidatesRouter.get('/all', listAllCandidatesController.index);
-
-candidatesRouter.post(
-  '/byTechnologies',
-  celebrate({
-    [Segments.BODY]: {
-      technologies: Joi.array().items(Joi.string()).single(),
-    },
-  }),
-  listCandidatesByTechnologyController.index,
-);
+candidatesRouter.get('/', listCandidatesController.index);
 
 candidatesRouter.delete(
-  '/',
+  '/:id',
   celebrate({
-    [Segments.BODY]: {
+    [Segments.PARAMS]: {
       id: Joi.string().required(),
     },
   }),

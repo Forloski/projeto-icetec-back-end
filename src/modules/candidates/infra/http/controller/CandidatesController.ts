@@ -1,9 +1,15 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import ICreateCandidateDTO from '@modules/candidates/dtos/ICreateCandidateDTO';
+
 import CreateCandidate from '@modules/candidates/services/CreateCandidatesService';
 import DeleteCandidate from '@modules/candidates/services/DeleteCandidatesService';
 import UpdateCandidate from '@modules/candidates/services/UpdateCandidatesService';
+
+interface IUpdateCandidateData extends ICreateCandidateDTO {
+  id: string;
+}
 
 export default class CandidatesController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -23,17 +29,24 @@ export default class CandidatesController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.body;
+    const { id } = request.params;
 
     const deleteCandidate = container.resolve(DeleteCandidate);
 
     await deleteCandidate.execute(id);
 
-    return response.json(true);
+    return response.sendStatus(200);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id, name, email, age, linkedinUrl, technologies } = request.body;
+    const {
+      id,
+      name,
+      email,
+      age,
+      linkedinUrl,
+      technologies,
+    } = (request.query as unknown) as IUpdateCandidateData;
 
     const updateCandidate = container.resolve(UpdateCandidate);
 
