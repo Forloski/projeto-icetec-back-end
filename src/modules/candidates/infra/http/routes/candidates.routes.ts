@@ -29,7 +29,7 @@ candidatesRouter.post(
 );
 
 candidatesRouter.put(
-  '/',
+  '/:id',
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().required(),
